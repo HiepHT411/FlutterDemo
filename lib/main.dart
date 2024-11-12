@@ -3,41 +3,41 @@ import 'package:xam_app/quiz.dart';
 import 'package:xam_app/result.dart';
 
 void main() {
-  runApp(const QuizApp());
+  runApp(const MyApp());
 }
 
-// class MyApp extends StatelessWidget {
-//   const MyApp({super.key});
-//
-//   // This widget is the root of your application.
-//   @override
-//   Widget build(BuildContext context) {
-//     return MaterialApp(
-//       title: 'Flutter First Try',
-//       theme: ThemeData(
-//         // This is the theme of your application.
-//         //
-//         // TRY THIS: Try running your application with "flutter run". You'll see
-//         // the application has a purple toolbar. Then, without quitting the app,
-//         // try changing the seedColor in the colorScheme below to Colors.green
-//         // and then invoke "hot reload" (save your changes or press the "hot
-//         // reload" button in a Flutter-supported IDE, or press "r" if you used
-//         // the command line to start the app).
-//         //
-//         // Notice that the counter didn't reset back to zero; the application
-//         // state is not lost during the reload. To reset the state, use hot
-//         // restart instead.
-//         //
-//         // This works for code too, not just values: Most code changes can be
-//         // tested with just a hot reload.
-//         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-//         useMaterial3: true,
-//       ),
-//       // home: MyHomePage(title: 'Flutter Home Page')
-//       home: const HiFlutter(title: 'Techcombank'),
-//     );
-//   }
-// }
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  // This widget is the root of your application.
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Teckcombank',
+      theme: ThemeData(
+        // This is the theme of your application.
+        //
+        // TRY THIS: Try running your application with "flutter run". You'll see
+        // the application has a purple toolbar. Then, without quitting the app,
+        // try changing the seedColor in the colorScheme below to Colors.green
+        // and then invoke "hot reload" (save your changes or press the "hot
+        // reload" button in a Flutter-supported IDE, or press "r" if you used
+        // the command line to start the app).
+        //
+        // Notice that the counter didn't reset back to zero; the application
+        // state is not lost during the reload. To reset the state, use hot
+        // restart instead.
+        //
+        // This works for code too, not just values: Most code changes can be
+        // tested with just a hot reload.
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        useMaterial3: true,
+      ),
+      // home: MyHomePage(title: 'Flutter Home Page')
+      home: const HiFlutter(title: 'Techcombank'),
+    );
+  }
+}
 
 // class MyHomePage extends StatefulWidget {
 //   const MyHomePage({super.key, required this.title});
@@ -127,33 +127,111 @@ void main() {
 //   }
 // }
 
-// class HiFlutter extends StatelessWidget {
-//   final String title;
-//   const HiFlutter({super.key, required this.title});
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       // Set the background color of the scaffold
-//       backgroundColor: Colors.white,
-//       appBar: AppBar(
-//         // Set the background color of the app bar
-//         backgroundColor: Colors.red,
-//         foregroundColor: Colors.white,
-//         // Set the title of the app bar
-//         title: Text(title),
-//         titleTextStyle: const TextStyle(
-//           fontSize: 24,          // Set font size
-//           fontWeight: FontWeight.bold, // Set font weight
-//         ),
-//       ),
-//       body: Container(
-//         alignment: Alignment.center,
-//         child: const Text("Hi User!"),
-//       ),
-//     );
-//   }
-// }
+class HiFlutter extends StatefulWidget {
+  final String title;
+  const HiFlutter({super.key, required this.title});
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      // Set the background color of the scaffold
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        // Set the background color of the app bar
+        backgroundColor: Colors.red,
+        foregroundColor: Colors.white,
+        // Set the title of the app bar
+        title: Text(title),
+        titleTextStyle: const TextStyle(
+          fontSize: 24,          // Set font size
+          fontWeight: FontWeight.bold, // Set font weight
+        ),
+      ),
+      body: Container(
+        alignment: Alignment.center,
+        // child: const QuizApp(),
+      ),
+    );
+  }
 
+  @override
+  State<HiFlutter> createState() => _HiFlutter();
+}
+// ================ Drawer ================
+class _HiFlutter extends State<HiFlutter> {
+  int selectedIdx = 0;
+  static const TextStyle optionStyle = TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
+  static const List<Widget> widgetOpts = <Widget> [Text('Index 0: Home', style: optionStyle), Text('Index 1: Transfer', style: optionStyle), Text('Index 2: Saving Plans', style: optionStyle), Text('Index 3: Bonus & Reward', style: optionStyle), Text('Index 4: Quiz', style: optionStyle)];
+
+  void onItemTapped (int index) {
+    setState(() {
+      selectedIdx = index;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(widget.title),
+        leading: Builder(builder: (context) {
+          return IconButton(onPressed: () {Scaffold.of(context).openDrawer();}, icon: const Icon(Icons.menu));
+        })
+      ),
+      body: Center(child: widgetOpts[selectedIdx],),
+      drawer: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: [
+            const DrawerHeader(child: Text('Hi, User'), decoration: BoxDecoration(color: Colors.white)),
+            ListTile(
+              title: const Text('Home'),
+              selected: selectedIdx == 0,
+              onTap: () {
+                onItemTapped(0);
+                Navigator.pop(context);
+              }
+            ),
+            ListTile(
+                title: const Text('Transfer'),
+                selected: selectedIdx == 1,
+                onTap: () {
+                  onItemTapped(1);
+                  Navigator.pop(context);
+                }
+            ),
+            ListTile(
+                title: const Text('Saving Plans'),
+                selected: selectedIdx == 2,
+                onTap: () {
+                  onItemTapped(2);
+                  Navigator.pop(context);
+                }
+            ),
+            ListTile(
+                title: const Text('Bonus & Reward'),
+                selected: selectedIdx == 3,
+                onTap: () {
+                  onItemTapped(3);
+                  Navigator.pop(context);
+                }
+            ),
+            ListTile(
+              title: const Text('Quiz'),
+              selected: selectedIdx == 4,
+              onTap: () {
+                Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => const QuizApp()));
+              }
+            )
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+// ================ QuizApp ===============
 class QuizApp extends StatefulWidget {
   const QuizApp ({super.key});
 
@@ -249,7 +327,7 @@ class _QuizAppState extends State<QuizApp> {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
-          title: const Text('Quiz App'),
+          title: const Text('Techcombank'),
           backgroundColor: const Color(0xFF00E676),
         ),
         body: Padding(
